@@ -15,11 +15,20 @@ function generateSparkline(data_source, div_id, verbose) {
     // filtering data
     var data = []
     FilterData = function(d) {
-      record = {'period': d.period_end_date, 'value': d.value}
+      record = {'period': d.period_start_date, 'value': d.value}
       data.push(record) 
     }
 
     json['resources'].forEach(FilterData)
+    
+    // Filtering data based on date.
+    data = new DataCollection(data)
+      .query()
+      .sort('period', false)
+      .filter({
+        period__gte: '2014-07-01'
+      })
+      .values();
 
     if (verbose) console.log(data);
 
@@ -60,6 +69,15 @@ function generateSparkline(data_source, div_id, verbose) {
         },
         y: {
           show: false
+        }
+      },
+      grid: {
+        x: {
+          lines: [
+                { value: '2014-07-15', text: 'HDX Launch' },
+                { value: '2014-11-13', text: 'Ebola Page' },
+                { value: '2015-04-25', text: 'Nepal Earthquake' }
+            ]
         }
       }
     });
@@ -133,8 +151,8 @@ function GenerateGraphics() {
    
     // Calls the sparkline generating function.
     generateContainer('visualizations-container', metricid, false)
-    generateSparkline(data_url, metricid, false)
-    generateMetadata(metadata_url, metricid, true)
+    generateSparkline(data_url, metricid, true)
+    generateMetadata(metadata_url, metricid, false)
 
   }
 }
