@@ -63,8 +63,19 @@ h5 {
   stroke-width: 1.5px;
 }
 
+.c3-grid text {
+  font-size: 9px;
+  fill: #404040 !important;
+}
+.c3-grid line {
+  stroke: #404040;
+  stroke-width: 1px;
+  stroke-opacity: 0.3;
+}
+
 .no-margin {
   margin-right: 0px !important;
   margin-left: 0px !important;
   padding-bottom: 4%;
 }
+
