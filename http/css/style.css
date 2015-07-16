@@ -1,0 +1,70 @@
+body {
+	font-family: 'Open Sans';
+	font-size: 12px;
+	font-weight: 400;
+  background-color: #FFFFFF;
+}
+
+h3 {
+	font-size: 16px;
+	font-weight: 800;
+}
+
+h4 {
+  font-size: 14px;
+}
+
+h5 {
+	font-style: italic;
+	color: #ccc;
+}
+
+.top-bar {
+  background: #c79eda;
+  /* position: fixed; */
+  z-index: 1999;
+  top: 0;
+  left: 0;
+  height: 2px;
+}
+
+.title {
+	font-family: 'EB Garamond';
+	font-size: 45px;
+	padding-top: 5%;
+  /*padding-bottom: 4%;*/
+  margin-bottom: 0px !important;
+	font-style: italic;
+}
+
+.sub-title {
+	font-family: 'EB Garamond';
+	font-size: 27px;
+	font-style: italic;
+}
+
+.filters-container {
+   padding-top: 7%;
+}
+
+.result-container {
+   float: center;
+}
+
+
+.left-col-spacing {
+  width: 3% !important;
+}
+.left-col-spacing {
+  width: 6% !important;
+}
+
+.c3-line {
+  stroke-width: 1.5px;
+}
+
+.no-margin {
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+  padding-bottom: 4%;
+}
