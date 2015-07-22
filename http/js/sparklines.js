@@ -5,9 +5,16 @@
 // HDX. this function depends on:
 // -- c3.js
 // -- d3.js
-function generateSparkline(data_source, div_id, verbose) {
+function generateSparkline(data_source, div_id, verbose, use_ratio) {
 
   var div_id = '#' + div_id
+
+  function formatRatios(d, a) {
+      if (a)
+        return d3.format('%')(d)
+      else
+        return d
+  }
 
   d3.json(data_source, function(error, json) {
     if (error) return console.warn(error);
@@ -59,6 +66,12 @@ function generateSparkline(data_source, div_id, verbose) {
       size: {
           height: 100
       },
+      tooltip: {
+        format: {
+          value: function(d) { return formatRatios(d, use_ratio) }
+        }
+
+      },
       axis : {
         x : {
           show: false,
@@ -72,6 +85,8 @@ function generateSparkline(data_source, div_id, verbose) {
         }
       },
       grid: {
+
+        // Notes overlayed in every graphic.
         x: {
           lines: [
                 { value: '2014-07-15', text: 'HDX Launch' },
@@ -119,12 +134,12 @@ function generateContainer(div_id, metricid) {
 // from a resource independently.
 // this causes a performance issue,
 // but demonstrates how each call can be made independendtly.
-function GenerateGraphics() {
+function GenerateGraphics(verbose) {
   var metricids = [
-        'ckan-number-of-users', 
-        'ckan-number-of-datasets', 
-        'ckan-number-of-orgs', 
-        'ga-users', 
+        'ckan-number-of-users',
+        'ckan-number-of-datasets',
+        'ckan-number-of-orgs',
+        'ga-users',
         'ga-uniqueevents-resource-download',
         'ga-uniqueevents-resource-share',
         'ga-uniqueevents-dataset-share',
@@ -144,14 +159,26 @@ function GenerateGraphics() {
     // data from the our statistics API.
     // If value is weekly, have to change the
     // data parsing type in the C3.js function.
+    var is_ratio = false
     var metricid = metricids[i]
+    var metricid_ratios = ['calc-conversion-register', 'calc-conversion-download', 'calc-conversion-share']
     var period_type = 'w'
     var data_url = 'http://funnel.space/api/funnels?metricid=' + metricid + '&period_type=' + period_type
     var metadata_url = 'http://funnel.space/api/metrics?metricid=' + metricid
-   
+
+    // Check if it is a ratio representation.
+    for (j = 0; j < metricid_ratios.length; j++) {
+      if (metricid == metricid_ratios[j]) {
+        if (verbose)
+          console.log('This metricid is a ratio: ' + metricid_ratios[j])
+        
+        is_ratio = true
+      }
+    }
+
     // Calls the sparkline generating function.
     generateContainer('visualizations-container', metricid, false)
-    generateSparkline(data_url, metricid, true)
+    generateSparkline(data_url, metricid, false, is_ratio)
     generateMetadata(metadata_url, metricid, false)
 
   }
